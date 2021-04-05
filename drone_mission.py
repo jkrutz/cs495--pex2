@@ -14,6 +14,7 @@ import logging
 import traceback
 import sys
 import numpy as np
+import matplotlib.pyplot as plt
 
 log = None  # logger instance
 
@@ -125,6 +126,8 @@ def check_for_initial_target():
 
     # get current frame from the camera
     frame = get_cur_frame()
+    plt.imshow(frame)
+    plt.show()
 
     # Apply a Gaussian blur; this is a widely used effect in computer vision,
     # typically to reduce image noise and (slightly) reduce hard lines.
@@ -148,7 +151,7 @@ def check_for_initial_target():
     # Go here to learn more: https://www.geeksforgeeks.org/python-opencv-cv2-cvtcolor-method/
 
     # TODO: YOU COMPLETE the line of code below:
-    hsv = cv2.cvtColor(blurred, cv2.COLOR_RGB2HSV)  # or maybe COLOR_BGR2HSV
+    hsv = cv2.cvtColor(blurred, cv2.COLOR_BGR2HSV)
 
     # Perform basic thresholding on a range of HSV.
     # This page explains the details: https://docs.opencv.org/master/da/d97/tutorial_threshold_inRange.html
@@ -189,6 +192,8 @@ def check_for_initial_target():
 
     # TODO: YOU COMPLETE the line of code below:
     color_threshold = cv2.dilate(color_threshold, kernel, iterations=1)
+    plt.imshow(color_threshold)
+    plt.show()
 
     # By this point we essentially have a binary image (i.e. basic black & white features)
 
