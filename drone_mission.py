@@ -180,7 +180,7 @@ def check_for_initial_target():
     # with that minimal value.
 
     # TODO: YOU COMPLETE the line of code below:
-    kernel = np.ones((5,5), np.uint8)
+    kernel = np.ones((5, 5), np.uint8)
     color_threshold = cv2.erode(color_threshold, kernel, iterations=1)
 
     # Next, the dilate operation consists of convolving an image A with some kernel B,
