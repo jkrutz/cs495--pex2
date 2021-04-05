@@ -39,14 +39,14 @@ REQUIRED_SIGHT_COUNT = 1  # must get 60 target sightings in a row to be sure of 
 # TODO: you must determine your own minimum for color range by
 #    analysing your target's color.
 #  0,0,0 will not work very well for you.
-COLOR_RANGE_MIN = (0, 40, 20)
+COLOR_RANGE_MIN = np.array([195, 25, 25])
 
 # Max HSV values
 # TODO: you must determine your own maximum for color range by
 #    analysing your target's color.
 #  0,0,0 will not work very well for you.
 #  See comments in check_for_initial_target() related to basic thresholding on a range of HSV
-COLOR_RANGE_MAX = (6, 95, 100)
+COLOR_RANGE_MAX = np.array([205, 255, 255])
 
 # Smallest object radius to consider (in pixels)
 MIN_OBJ_RADIUS = 10
@@ -126,8 +126,6 @@ def check_for_initial_target():
 
     # get current frame from the camera
     frame = get_cur_frame()
-    plt.imshow(frame)
-    plt.show()
 
     # Apply a Gaussian blur; this is a widely used effect in computer vision,
     # typically to reduce image noise and (slightly) reduce hard lines.
@@ -192,8 +190,6 @@ def check_for_initial_target():
 
     # TODO: YOU COMPLETE the line of code below:
     color_threshold = cv2.dilate(color_threshold, kernel, iterations=1)
-    plt.imshow(color_threshold)
-    plt.show()
 
     # By this point we essentially have a binary image (i.e. basic black & white features)
 
@@ -246,6 +242,8 @@ def check_for_initial_target():
 
         # TODO: YOU COMPLETE the code below:
         center = (cx, cy)
+
+        cv2.imshow('res', found_contours)
 
     return center, radius, (x, y), frame
 
