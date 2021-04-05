@@ -5,8 +5,8 @@
 
 import logging
 import time
-import PEX02_python.drone_lib as drone_lib
-import PEX02_python.fg_camera_sim as fg_camera_sim
+import drone_lib
+import fg_camera_sim
 import cv2
 import imutils
 import random
