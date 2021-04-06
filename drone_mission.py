@@ -15,6 +15,9 @@ import traceback
 import sys
 import numpy as np
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+from matplotlib import cm
+from matplotlib import colors
 
 log = None  # logger instance
 
@@ -39,14 +42,14 @@ REQUIRED_SIGHT_COUNT = 1  # must get 60 target sightings in a row to be sure of 
 # TODO: you must determine your own minimum for color range by
 #    analysing your target's color.
 #  0,0,0 will not work very well for you.
-COLOR_RANGE_MIN = np.array([195, 25, 25])
+COLOR_RANGE_MIN = np.array([25, 200, 80])
 
 # Max HSV values
 # TODO: you must determine your own maximum for color range by
 #    analysing your target's color.
 #  0,0,0 will not work very well for you.
 #  See comments in check_for_initial_target() related to basic thresholding on a range of HSV
-COLOR_RANGE_MAX = np.array([205, 255, 255])
+COLOR_RANGE_MAX = np.array([55, 250, 120])
 
 # Smallest object radius to consider (in pixels)
 MIN_OBJ_RADIUS = 10
@@ -105,6 +108,8 @@ def get_cur_frame(attempts=5):
     # code below and replace with code that returns a single frame
     # from your camera.
     image = fg_camera_sim.get_cur_frame()
+    #laptop_camera = cv2.VideoCapture(0)
+    #_, image = laptop_camera.read()
     return cv2.resize(image, (int(FRAME_HORIZONTAL_CENTER * 2), int(FRAME_VERTICAL_CENTER * 2)))
 
     #Code below can be used with the realsense camera...
@@ -125,7 +130,7 @@ def check_for_initial_target():
     global inside_circle
 
     # get current frame from the camera
-    frame = get_cur_frame()
+    frame = get_cur_frame()  # this is in BGR!!
 
     # Apply a Gaussian blur; this is a widely used effect in computer vision,
     # typically to reduce image noise and (slightly) reduce hard lines.
@@ -183,7 +188,7 @@ def check_for_initial_target():
     # TODO: YOU COMPLETE the line of code below:
     kernel = np.ones((5, 5), np.uint8)
     color_threshold = cv2.erode(color_threshold, kernel, iterations=1)
-
+    cv2.imshow('res', color_threshold)
     # Next, the dilate operation consists of convolving an image A with some kernel B,
     # which can have any shape or size, usually a square or circle.
     # The result is the "fattening" of our circle in this case.
@@ -243,7 +248,7 @@ def check_for_initial_target():
         # TODO: YOU COMPLETE the code below:
         center = (cx, cy)
 
-        cv2.imshow('res', found_contours)
+
 
     return center, radius, (x, y), frame
 
