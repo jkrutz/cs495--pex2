@@ -440,12 +440,12 @@ def determine_drone_actions(target_point, frame, target_sightings):
                     # pass
                 if dy < 0:  # back
                     # do what?  positive direction...
-                    y_movement = mov_inc
+                    y_movement = -mov_inc
                     direction1 = "Behind of target"
                     #pass
                 if dy > 0:  # forward
                     # do what?  negative direction...
-                    y_movement = -mov_inc
+                    y_movement = mov_inc
                     direction1 = "In front of target"
                     #pass
                 if abs(dx) < 7:  # if we are within 8 pixels, no need to make adjustment
@@ -469,7 +469,7 @@ def determine_drone_actions(target_point, frame, target_sightings):
                 #   Note that move_local expects velocities, not actual x,y,z positions
                 #   figure out line of code below to get drone to make minor adjustment to current X,Y position
                 #   while descending at .5 m/s
-                drone_lib.move_local(drone, x_movement, y_movement, 0.5, duration=1, log=log)
+                drone_lib.move_local(drone, y_movement, x_movement, 0.5, duration=1, log=log)
 
             else:  # We lost the target...
 
