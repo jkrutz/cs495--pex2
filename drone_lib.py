@@ -22,7 +22,7 @@ def move_local(device, x_vel, y_vel, z_vel, duration=1, log=None):
     send_local_ned_velocity(device, x_vel, y_vel, z_vel, duration)
 
 
-def condition_yaw(device, heading, relative=False, log=None):
+def condition_yaw(device, heading, relative=True, log=None):
     """
     Send MAV_CMD_CONDITION_YAW message to point vehicle at a specified heading (in degrees).
 
