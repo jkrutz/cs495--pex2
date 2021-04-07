@@ -177,9 +177,9 @@ def check_for_initial_target():
 
     # TTODO: YOU COMPLETE the line of code below:
     color_threshold = cv2.inRange(hsv, COLOR_RANGE_MIN, COLOR_RANGE_MAX)
-    temp = cv2.bitwise_and(blurred, blurred, mask=color_threshold)
-    plt.imshow(cv2.cvtColor(temp, cv2.COLOR_BGR2RGB))
-    plt.show()
+    # temp = cv2.bitwise_and(blurred, blurred, mask=color_threshold)
+    # plt.imshow(cv2.cvtColor(temp, cv2.COLOR_BGR2RGB))
+    # plt.show()
 
     # Now, perform some basic morphological operations to enhance the shapes present in the image.
     # Morphological operations are a set of operations that process images based on shapes;
@@ -630,13 +630,13 @@ def main():
     global log
 
     # Code borrowed, shows the max and min colors
-    lo_square = np.full((10, 10, 3), COLOR_RANGE_MIN, dtype=np.uint8) / 255.0
-    do_square = np.full((10, 10, 3), COLOR_RANGE_MAX, dtype=np.uint8) / 255.0
-    plt.subplot(1, 2, 1)
-    plt.imshow(hsv_to_rgb(do_square))
-    plt.subplot(1, 2, 2)
-    plt.imshow(hsv_to_rgb(lo_square))
-    plt.show()
+    # lo_square = np.full((10, 10, 3), COLOR_RANGE_MIN, dtype=np.uint8) / 255.0
+    # do_square = np.full((10, 10, 3), COLOR_RANGE_MAX, dtype=np.uint8) / 255.0
+    # plt.subplot(1, 2, 1)
+    # plt.imshow(hsv_to_rgb(do_square))
+    # plt.subplot(1, 2, 2)
+    # plt.imshow(hsv_to_rgb(lo_square))
+    # plt.show()
 
     # Setup a log file for recording important activities during our session.
     log_file = time.strftime("%Y%m%d-%H%M%S")+".log"
