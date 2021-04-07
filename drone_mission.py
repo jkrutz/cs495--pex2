@@ -6,7 +6,7 @@
 import logging
 import time
 
-from dronekit import VehicleMode, LocationGlobalRelative
+from dronekit import connect, VehicleMode, LocationGlobalRelative
 
 import drone_lib
 import fg_camera_sim
@@ -479,7 +479,7 @@ def determine_drone_actions(target_point, frame, target_sightings):
                 #   Note that move_local expects velocities, not actual x,y,z positions
                 #   figure out line of code below to get drone to make minor adjustment to current X,Y position
                 #   while descending at .5 m/s
-                drone_lib.move_local(drone, x_movement, y_movement, mov_inc, .5, logging)
+                drone_lib.move_local(drone, x_movement, y_movement, mov_inc, duration=.5, log=log)
 
             else:  # We lost the target...
 
