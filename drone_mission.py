@@ -495,7 +495,7 @@ def determine_drone_actions(target_point, frame, target_sightings):
                     #   1. move to point here
                     #   2. perform RANDOM yaw here for a different vantage point than before
                     drone_lib.goto_point(drone, last_obj_lat, last_obj_lon, drone.airspeed, last_obj_alt + 5, log=log)
-                    randHead = random.randint(0, 360)
+                    randHead = random.randint(0, 20)
                     drone_lib.condition_yaw(drone, randHead, log=log)
 
                 else:
