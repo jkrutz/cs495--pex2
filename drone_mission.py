@@ -6,7 +6,7 @@
 import logging
 import time
 
-from dronekit import VehicleMode, LocationGlobalRelative
+from dronekit import VehicleMode
 
 import drone_lib
 import fg_camera_sim
@@ -389,23 +389,12 @@ def determine_drone_actions(target_point, frame, target_sightings):
                     # target in the incoming images.
                     logging.info(f"Positioning towards target...")
 
-                    # TTODO: YOU COMPLETE the 2 lines of code below:
+                    # TODO: YOU COMPLETE the 2 lines of code below:
                     #   goto point where
                     #   the target was originally spotted (don't forget to pass the log object)
-                    #   hint: last_obj_lat, last_obj_lon, drone.airspeed, ast_obj_alt+5, last_obj_heading
+                    #   hint: ast_obj_lat, last_obj_lon, drone.airspeed, ast_obj_alt+5, last_obj_heading
                     #   1. move to point here
                     #   2. perform yaw to face in right direction here.
-                    print(f"Goto point: {last_obj_lat}, {last_obj_lon}, {drone.airspeed}, {last_obj_alt+5}...")
-                    point = LocationGlobalRelative(last_obj_lat, last_obj_lon, last_obj_alt+5)
-                    drone.simple_goto(point)
-                    # set the default travel speed
-                    #drone.airspeed = speed
-                    while (
-                            drone.location.global_relative_frame.alt != last_obj_alt and drone.location.global_relative_frame.lon != last_obj_lon and drone.location.global_relative_frame.lat != last_obj_lat):
-                        print(f"Current altitude: {drone.location.global_relative_frame.alt}")
-                        print(f"Current lat: {drone.location.global_relative_frame.lat}")
-                        print(f"Current lon: {drone.location.global_relative_frame.lon}")
-
 
     # Execute drone commands...
     if mission_mode == MISSION_MODE_TARGET:
@@ -419,6 +408,11 @@ def determine_drone_actions(target_point, frame, target_sightings):
             #    land the drone (don't forget to pass the log object)
 
             cv2.putText(frame, "Landing...", (10, 400), font, 1, (255, 0, 0), 2, cv2.LINE_AA)
+            drone.mode = VehicleMode("LAND")
+            while drone.armed:
+                logging.info(f"Current altitude: {drone.location.global_relative_frame.alt}")
+                time.sleep(.1)
+            logging.info("Device has landed.")
             return  # Mission is over (hopefully, all is well).
         else:
             # Adjust position relative to target
