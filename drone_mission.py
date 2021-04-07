@@ -47,14 +47,18 @@ REQUIRED_SIGHT_COUNT = 1  # must get 60 target sightings in a row to be sure of 
 # in lookups, the H is out of 360
 # S/V is out of 100%
 #COLOR_RANGE_MIN = (135, 30, 191)
-COLOR_RANGE_MIN = (50, 0, 0)
+#COLOR_RANGE_MIN = (60, 30, 0)
+COLOR_RANGE_MIN = (0, 150, 0)
+
 # Max HSV values
 # TODO: you must determine your own maximum for color range by
 #    analysing your target's color.
 #  0,0,0 will not work very well for you.
 #  See comments in check_for_initial_target() related to basic thresholding on a range of HSV
 #COLOR_RANGE_MAX = (145, 79, 255)
-COLOR_RANGE_MAX = (255, 255, 255)
+# COLOR_RANGE_MAX = (240, 100, 255)
+COLOR_RANGE_MAX = (30, 255, 255)
+
 
 # Smallest object radius to consider (in pixels)
 MIN_OBJ_RADIUS = 10
@@ -196,7 +200,7 @@ def check_for_initial_target():
     # TODO: YOU COMPLETE the line of code below:
     kernel = np.ones((5, 5), np.uint8)
     color_threshold = cv2.erode(color_threshold, kernel, iterations=1)
-    cv2.imshow('res', color_threshold)
+
     # Next, the dilate operation consists of convolving an image A with some kernel B,
     # which can have any shape or size, usually a square or circle.
     # The result is the "fattening" of our circle in this case.
@@ -287,6 +291,8 @@ def determine_drone_actions(target_point, frame, target_sightings):
         # dx = float(target_point's x position)- frame's horizontal center
         # dy = frame's vertical center -float(target_point's y position)
 
+        dx = 0
+        dy = 0
         logging.info(f"Anticipated change in position towards target: dx={dx}, dy={dy}")
 
         # Draw a line between most-recent center point of target and
