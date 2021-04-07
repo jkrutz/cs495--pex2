@@ -431,19 +431,19 @@ def determine_drone_actions(target_point, frame, target_sightings):
 
                 if dx < 0:  # left
                     # do what?  negative direction...
-                    x_movement = -mov_inc
+                    x_movement = mov_inc
                     # pass  # (REMOVE 'pass' when you have supplied actual code)
                 if dx > 0:  # right
                     # do what?  positive direction...
-                    x_movement = mov_inc
+                    x_movement = -mov_inc
                     # pass
                 if dy < 0: # back
                     # do what?  positive direction...
-                    y_movement = mov_inc
+                    y_movement = -mov_inc
                     #pass
                 if dy > 0: # forward
                     # do what?  negative direction...
-                    y_movement = -mov_inc
+                    y_movement = mov_inc
                     #pass
                 if abs(dx) < 7:  # if we are within 8 pixels, no need to make adjustment
                     x_movement = 0.0
