@@ -5,6 +5,9 @@
 
 import logging
 import time
+
+from dronekit import VehicleMode
+
 import drone_lib
 import fg_camera_sim
 import cv2
@@ -40,22 +43,22 @@ FRAME_VERTICAL_CENTER = 240.0
 REQUIRED_SIGHT_COUNT = 1  # must get 60 target sightings in a row to be sure of actual target
 
 # Min HSV values
-# TODO: you must determine your own minimum for color range by
+# TTODO: you must determine your own minimum for color range by
 #    analysing your target's color.
 #  0,0,0 will not work very well for you.
 # each value is out of 255
 # in lookups, the H is out of 360
 # S/V is out of 100%
-#COLOR_RANGE_MIN = (135, 30, 191)
-#COLOR_RANGE_MIN = (60, 30, 0)
+# COLOR_RANGE_MIN = (135, 30, 191)
+# COLOR_RANGE_MIN = (60, 30, 0)
 COLOR_RANGE_MIN = (0, 150, 0)
 
 # Max HSV values
-# TODO: you must determine your own maximum for color range by
+# TTODO: you must determine your own maximum for color range by
 #    analysing your target's color.
 #  0,0,0 will not work very well for you.
 #  See comments in check_for_initial_target() related to basic thresholding on a range of HSV
-#COLOR_RANGE_MAX = (145, 79, 255)
+# COLOR_RANGE_MAX = (145, 79, 255)
 # COLOR_RANGE_MAX = (240, 100, 255)
 COLOR_RANGE_MAX = (30, 255, 255)
 
@@ -146,7 +149,7 @@ def check_for_initial_target():
     # You can find more details here:
     # https://opencv24-python-tutorials.readthedocs.io/en/stable/py_tutorials/py_imgproc/py_filtering/py_filtering.html
 
-    # TODO: YOU COMPLETE the line of code below:
+    # TTODO: YOU COMPLETE the line of code below:
     blurred = cv2.GaussianBlur(frame, (5, 5), 0)
 
     # Get hue, saturation, value.
@@ -162,7 +165,7 @@ def check_for_initial_target():
     # objects based on color.
     # Go here to learn more: https://www.geeksforgeeks.org/python-opencv-cv2-cvtcolor-method/
 
-    # TODO: YOU COMPLETE the line of code below:
+    # TTODO: YOU COMPLETE the line of code below:
     hsv = cv2.cvtColor(blurred, cv2.COLOR_BGR2HSV)
 
     # Perform basic thresholding on a range of HSV.
@@ -172,7 +175,7 @@ def check_for_initial_target():
     # Use wide range to account for variations of light, dirt, and surface imperfections...
     # especially as the drone gets closer to the target on approach.
 
-    # TODO: YOU COMPLETE the line of code below:
+    # TTODO: YOU COMPLETE the line of code below:
     color_threshold = cv2.inRange(hsv, COLOR_RANGE_MIN, COLOR_RANGE_MAX)
     temp = cv2.bitwise_and(blurred, blurred, mask=color_threshold)
     plt.imshow(cv2.cvtColor(temp, cv2.COLOR_BGR2RGB))
@@ -197,7 +200,7 @@ def check_for_initial_target():
     # value overlapped by B and replace the image pixel under the anchor point
     # with that minimal value.
 
-    # TODO: YOU COMPLETE the line of code below:
+    # TTODO: YOU COMPLETE the line of code below:
     kernel = np.ones((5, 5), np.uint8)
     color_threshold = cv2.erode(color_threshold, kernel, iterations=1)
 
@@ -205,7 +208,7 @@ def check_for_initial_target():
     # which can have any shape or size, usually a square or circle.
     # The result is the "fattening" of our circle in this case.
 
-    # TODO: YOU COMPLETE the line of code below:
+    # TTODO: YOU COMPLETE the line of code below:
     color_threshold = cv2.dilate(color_threshold, kernel, iterations=1)
 
     # By this point we essentially have a binary image (i.e. basic black & white features)
@@ -218,7 +221,7 @@ def check_for_initial_target():
     # So remember, the object(s) to be found should be white and background should be black.
     # Go here for details: https://docs.opencv.org/master/d4/d73/tutorial_py_contours_begin.html
 
-    # TODO: YOU COMPLETE the line of code below:
+    # TTODO: YOU COMPLETE the line of code below:
     found_contours = cv2.findContours(color_threshold, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
     # Now, we want to remove any noise (i.e. any contours like dots and other specks caused by intense light reflection)
@@ -257,10 +260,8 @@ def check_for_initial_target():
         cx = int(middle['m10'] / middle['m00'])
         cy = int(middle['m01'] / middle['m00'])
 
-        # TODO: YOU COMPLETE the code below:
+        # TTODO: YOU COMPLETE the code below:
         center = (cx, cy)
-
-
 
     return center, radius, (x, y), frame
 
@@ -286,13 +287,14 @@ def determine_drone_actions(target_point, frame, target_sightings):
     # Now, lets calculate our drone's actions according to what we have found...
     if target_point is not None:
 
-        # TODO: determine dx and dy here (drone's position relative to the target's center)
+        # TTODO: determine dx and dy here (drone's position relative to the target's center)
         #   Note that this is in pixels.
         # dx = float(target_point's x position)- frame's horizontal center
         # dy = frame's vertical center -float(target_point's y position)
 
-        dx = 0
-        dy = 0
+        dx = float(target_point[0]) - FRAME_HORIZONTAL_CENTER
+        dy = FRAME_VERTICAL_CENTER - float(target_point[1])
+        # print(float(target_point[0]))
         logging.info(f"Anticipated change in position towards target: dx={dx}, dy={dy}")
 
         # Draw a line between most-recent center point of target and
@@ -338,9 +340,12 @@ def determine_drone_actions(target_point, frame, target_sightings):
         # Drone's internal mission is temporarily
         # suspended until we can confirm target.
 
-        # TODO: YOU ADD required line of code below:
+        # TTODO: YOU ADD required line of code below:
         #    switch over to guided mode so that we can control the drone's movements
         #    (don't forget to pass the log object).
+
+        drone.mode = VehicleMode("GUIDED")
+        logging.info(f"Switching to GUIDED mode...")
 
     else:
         if mission_mode == MISSION_MODE_CONFIRM \
@@ -360,9 +365,11 @@ def determine_drone_actions(target_point, frame, target_sightings):
                 last_obj_alt = None
                 last_obj_heading = None
 
-                # TODO: YOU COMPLETE the line of code below:
+                # TTODO: YOU COMPLETE the line of code below:
                 #    switch back to auto mode so that the drone can resume the internal flight plan
                 #    (don't forget to pass the log object).
+                drone.mode = VehicleMode("AUTO")
+                logging.info(f"Switching to AUTO mode...")
 
             else:
                 # Here, if the target is spotted the required
