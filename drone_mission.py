@@ -396,7 +396,7 @@ def determine_drone_actions(target_point, frame, target_sightings):
                     #   1. move to point here
                     #   2. perform yaw to face in right direction here.
                     drone_lib.goto_point(drone, last_obj_lat, last_obj_lon, drone.airspeed, last_obj_alt + 5, log=log)
-                    drone_lib.condition_yaw(drone, last_obj_heading, True, log=log)
+                    drone_lib.condition_yaw(drone, last_obj_heading, False, log=log)
 
     # Execute drone commands...
     if mission_mode == MISSION_MODE_TARGET:
@@ -431,19 +431,19 @@ def determine_drone_actions(target_point, frame, target_sightings):
 
                 if dx < 0:  # left
                     # do what?  negative direction...
-                    x_movement = mov_inc
+                    x_movement = -mov_inc
                     # pass  # (REMOVE 'pass' when you have supplied actual code)
                 if dx > 0:  # right
                     # do what?  positive direction...
-                    x_movement = -mov_inc
+                    x_movement = mov_inc
                     # pass
                 if dy < 0: # back
                     # do what?  positive direction...
-                    y_movement = -mov_inc
+                    y_movement = mov_inc
                     #pass
                 if dy > 0: # forward
                     # do what?  negative direction...
-                    y_movement = mov_inc
+                    y_movement = -mov_inc
                     #pass
                 if abs(dx) < 7:  # if we are within 8 pixels, no need to make adjustment
                     x_movement = 0.0
@@ -466,7 +466,7 @@ def determine_drone_actions(target_point, frame, target_sightings):
                 #   Note that move_local expects velocities, not actual x,y,z positions
                 #   figure out line of code below to get drone to make minor adjustment to current X,Y position
                 #   while descending at .5 m/s
-                drone_lib.move_local(drone, x_movement, y_movement, 0.5, duration=.5, log=log)
+                drone_lib.move_local(drone, x_movement, y_movement, 0.5, duration=1, log=log)
 
             else:  # We lost the target...
 
@@ -491,11 +491,14 @@ def determine_drone_actions(target_point, frame, target_sightings):
                                 (255, 0, 0), 2, cv2.LINE_AA)
 
                     # Move to point of original sighting.
-                    # TODO: YOU COMPLETE the 2 lines of code below:
+                    # TTODO: YOU COMPLETE the 2 lines of code below:
                     #   goto point where
                     #   the target was originally spotted (don't forget to pass the log object)
                     #   1. move to point here
                     #   2. perform RANDOM yaw here for a different vantage point than before
+                    drone_lib.goto_point(drone, last_obj_lat, last_obj_lon, drone.airspeed, last_obj_alt + 5, log=log)
+                    randHead = random.randint(0, 360)
+                    drone_lib.condition_yaw(drone, randHead, False, log=log)
 
                 else:
                     # if we failed to re-locate the target,
