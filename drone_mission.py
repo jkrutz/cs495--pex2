@@ -120,11 +120,11 @@ def get_cur_frame(attempts=5):
     # code below and replace with code that returns a single frame
     # from your camera.
     image = fg_camera_sim.get_cur_frame()
-    #laptop_camera = cv2.VideoCapture(0)
-    #_, image = laptop_camera.read()
+    # laptop_camera = cv2.VideoCapture(0)
+    # _, image = laptop_camera.read()
     return cv2.resize(image, (int(FRAME_HORIZONTAL_CENTER * 2), int(FRAME_VERTICAL_CENTER * 2)))
 
-    #Code below can be used with the realsense camera...
+    # Code below can be used with the realsense camera...
     # while tries <= attempts:
     #    try:
     #        frames = pipeline.wait_for_frames()
@@ -435,11 +435,11 @@ def determine_drone_actions(target_point, frame, target_sightings):
                     # do what?  positive direction...
                     x_movement = -mov_inc
                     # pass
-                if dy < 0: # back
+                if dy < 0:  # back
                     # do what?  positive direction...
                     y_movement = -mov_inc
                     #pass
-                if dy > 0: # forward
+                if dy > 0:  # forward
                     # do what?  negative direction...
                     y_movement = mov_inc
                     #pass
