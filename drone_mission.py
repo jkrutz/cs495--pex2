@@ -18,6 +18,7 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib import cm
 from matplotlib import colors
+from matplotlib.colors import hsv_to_rgb
 
 log = None  # logger instance
 
@@ -42,14 +43,18 @@ REQUIRED_SIGHT_COUNT = 1  # must get 60 target sightings in a row to be sure of 
 # TODO: you must determine your own minimum for color range by
 #    analysing your target's color.
 #  0,0,0 will not work very well for you.
-COLOR_RANGE_MIN = np.array([25, 200, 80])
-
+# each value is out of 255
+# in lookups, the H is out of 360
+# S/V is out of 100%
+#COLOR_RANGE_MIN = (135, 30, 191)
+COLOR_RANGE_MIN = (50, 0, 0)
 # Max HSV values
 # TODO: you must determine your own maximum for color range by
 #    analysing your target's color.
 #  0,0,0 will not work very well for you.
 #  See comments in check_for_initial_target() related to basic thresholding on a range of HSV
-COLOR_RANGE_MAX = np.array([55, 250, 120])
+#COLOR_RANGE_MAX = (145, 79, 255)
+COLOR_RANGE_MAX = (255, 255, 255)
 
 # Smallest object radius to consider (in pixels)
 MIN_OBJ_RADIUS = 10
@@ -165,6 +170,9 @@ def check_for_initial_target():
 
     # TODO: YOU COMPLETE the line of code below:
     color_threshold = cv2.inRange(hsv, COLOR_RANGE_MIN, COLOR_RANGE_MAX)
+    temp = cv2.bitwise_and(blurred, blurred, mask=color_threshold)
+    plt.imshow(cv2.cvtColor(temp, cv2.COLOR_BGR2RGB))
+    plt.show()
 
     # Now, perform some basic morphological operations to enhance the shapes present in the image.
     # Morphological operations are a set of operations that process images based on shapes;
@@ -593,6 +601,15 @@ def search_for_target():
 def main():
     global drone
     global log
+
+    # Code borrowed, shows the max and min colors
+    lo_square = np.full((10, 10, 3), COLOR_RANGE_MIN, dtype=np.uint8) / 255.0
+    do_square = np.full((10, 10, 3), COLOR_RANGE_MAX, dtype=np.uint8) / 255.0
+    plt.subplot(1, 2, 1)
+    plt.imshow(hsv_to_rgb(do_square))
+    plt.subplot(1, 2, 2)
+    plt.imshow(hsv_to_rgb(lo_square))
+    plt.show()
 
     # Setup a log file for recording important activities during our session.
     log_file = time.strftime("%Y%m%d-%H%M%S")+".log"
