@@ -294,6 +294,12 @@ def determine_drone_actions(target_point, frame, target_sightings):
 
         dx = float(target_point[0]) - FRAME_HORIZONTAL_CENTER
         dy = FRAME_VERTICAL_CENTER - float(target_point[1])
+        print(dx)
+        print(target_point[0])
+        print(FRAME_HORIZONTAL_CENTER)
+        print(dy)
+        print(target_point[1])
+        print(FRAME_VERTICAL_CENTER)
         # print(float(target_point[0]))
         logging.info(f"Anticipated change in position towards target: dx={dx}, dy={dy}")
 
@@ -430,22 +436,22 @@ def determine_drone_actions(target_point, frame, target_sightings):
                 if dx < 0:  # left
                     # do what?  negative direction...
                     x_movement = -mov_inc
-                    direction1 = "Left of target"
+                    direction1 = "Target to Left"
                     # pass  # (REMOVE 'pass' when you have supplied actual code)
                 if dx > 0:  # right
                     # do what?  positive direction...
                     x_movement = mov_inc
-                    direction1 = "Right of target"
+                    direction1 = "Target to Right"
                     # pass
                 if dy < 0:  # back
                     # do what?  positive direction...
                     y_movement = -mov_inc
-                    direction2 = "Behind of target"
+                    direction2 = "Target Behind"
                     #pass
                 if dy > 0:  # forward
                     # do what?  negative direction...
                     y_movement = mov_inc
-                    direction2 = "In front of target"
+                    direction2 = "Target Front"
                     #pass
                 if abs(dx) < 7:  # if we are within 8 pixels, no need to make adjustment
                     x_movement = 0.0
