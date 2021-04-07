@@ -395,16 +395,9 @@ def determine_drone_actions(target_point, frame, target_sightings):
                     #   hint: ast_obj_lat, last_obj_lon, drone.airspeed, ast_obj_alt+5, last_obj_heading
                     #   1. move to point here
                     #   2. perform yaw to face in right direction here.
-                    print(f"Goto point: {last_obj_lat}, {last_obj_lon}, {drone.airspeed}, {last_obj_alt + 5}...")
-                    point = LocationGlobalRelative(last_obj_lat, last_obj_lon, last_obj_alt + 5)
-                    drone.simple_goto(point)
-                    # set the default travel speed
-                    # drone.airspeed = speed
-                    while (
-                            drone.location.global_relative_frame.alt != last_obj_alt and drone.location.global_relative_frame.lon != last_obj_lon and drone.location.global_relative_frame.lat != last_obj_lat):
-                        print(f"Current altitude: {drone.location.global_relative_frame.alt}")
-                        print(f"Current lat: {drone.location.global_relative_frame.lat}")
-                        print(f"Current lon: {drone.location.global_relative_frame.lon}")
+                    drone_lib.goto_point(drone, last_obj_lat, last_obj_lon, drone.speed, last_obj_alt + 5, log=log)
+                    drone_lib.condition_yaw(drone, last_obj_heading, True, log=log)
+
     # Execute drone commands...
     if mission_mode == MISSION_MODE_TARGET:
         if drone.location.global_relative_frame.alt <= 3:
@@ -415,13 +408,7 @@ def determine_drone_actions(target_point, frame, target_sightings):
 
             # TTODO: YOU COMPLETE the line of code below:
             #    land the drone (don't forget to pass the log object)
-
-            cv2.putText(frame, "Landing...", (10, 400), font, 1, (255, 0, 0), 2, cv2.LINE_AA)
-            drone.mode = VehicleMode("LAND")
-            while drone.armed:
-                logging.info(f"Current altitude: {drone.location.global_relative_frame.alt}")
-                time.sleep(.1)
-            logging.info("Device has landed.")
+            drone_lib.device_land(drone, log=log)
             return  # Mission is over (hopefully, all is well).
         else:
             # Adjust position relative to target
@@ -479,7 +466,7 @@ def determine_drone_actions(target_point, frame, target_sightings):
                 #   Note that move_local expects velocities, not actual x,y,z positions
                 #   figure out line of code below to get drone to make minor adjustment to current X,Y position
                 #   while descending at .5 m/s
-                drone_lib.move_local(drone, x_movement, y_movement, mov_inc, duration=.5, log=log)
+                drone_lib.move_local(drone, x_movement, y_movement, 0.5, duration=.5, log=log)
 
             else:  # We lost the target...
 
