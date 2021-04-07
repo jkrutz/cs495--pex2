@@ -438,7 +438,7 @@ def determine_drone_actions(target_point, frame, target_sightings):
                     x_movement = -mov_inc
                     direction1 = "Target to Left"
                     # pass  # (REMOVE 'pass' when you have supplied actual code)
-                if dx > 0:  # right
+                elif dx > 0:  # right
                     # do what?  positive direction...
                     x_movement = mov_inc
                     direction1 = "Target to Right"
@@ -448,7 +448,7 @@ def determine_drone_actions(target_point, frame, target_sightings):
                     y_movement = -mov_inc
                     direction2 = "Target Behind"
                     #pass
-                if dy > 0:  # forward
+                elif dy > 0:  # forward
                     # do what?  negative direction...
                     y_movement = mov_inc
                     direction2 = "Target Front"
@@ -523,7 +523,7 @@ def determine_drone_actions(target_point, frame, target_sightings):
                     #    switch over to whatever mode you need to
                     #    so as to resume the drone's internal mission
                     #    (don't forget to pass the log object)
-                    drone_lib.change_device_mode(drone, "AUTO", log=log)
+                    drone_lib.execute_flight_plan(drone, log=log)
 
 
 def search_for_target():
