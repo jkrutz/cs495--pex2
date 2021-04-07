@@ -393,6 +393,7 @@ def determine_drone_actions(target_point, frame, target_sightings):
                     #   hint: ast_obj_lat, last_obj_lon, drone.airspeed, ast_obj_alt+5, last_obj_heading
                     #   1. move to point here
                     #   2. perform yaw to face in right direction here.
+                    drone_lib.goto_point()
                     drone_lib.goto_point(drone, last_obj_lat, last_obj_lon, drone.airspeed, last_obj_alt + 5, log=log)
                     drone_lib.condition_yaw(drone, last_obj_heading, log=log)
 
@@ -430,18 +431,22 @@ def determine_drone_actions(target_point, frame, target_sightings):
                 if dx < 0:  # left
                     # do what?  negative direction...
                     x_movement = -mov_inc
+                    direction1 = "Left of target"
                     # pass  # (REMOVE 'pass' when you have supplied actual code)
                 if dx > 0:  # right
                     # do what?  positive direction...
                     x_movement = mov_inc
+                    direction1 = "Right of target"
                     # pass
                 if dy < 0:  # back
                     # do what?  positive direction...
                     y_movement = mov_inc
+                    direction1 = "Behind of target"
                     #pass
                 if dy > 0:  # forward
                     # do what?  negative direction...
                     y_movement = -mov_inc
+                    direction1 = "In front of target"
                     #pass
                 if abs(dx) < 7:  # if we are within 8 pixels, no need to make adjustment
                     x_movement = 0.0
