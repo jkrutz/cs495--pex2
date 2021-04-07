@@ -40,7 +40,7 @@ FRAME_HORIZONTAL_CENTER = 320.0
 FRAME_VERTICAL_CENTER = 240.0
 
 # Number of frames in a row we need to confirm a suspected target
-REQUIRED_SIGHT_COUNT = 1  # must get 60 target sightings in a row to be sure of actual target
+REQUIRED_SIGHT_COUNT = 60  # must get 60 target sightings in a row to be sure of actual target
 
 # Min HSV values
 # TTODO: you must determine your own minimum for color range by
