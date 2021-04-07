@@ -344,8 +344,7 @@ def determine_drone_actions(target_point, frame, target_sightings):
         #    switch over to guided mode so that we can control the drone's movements
         #    (don't forget to pass the log object).
 
-        drone.mode = VehicleMode("GUIDED")
-        logging.info(f"Switching to GUIDED mode...")
+        drone_lib.change_device_mode(drone, "GUIDED", log=log)
 
     else:
         if mission_mode == MISSION_MODE_CONFIRM \
@@ -368,8 +367,7 @@ def determine_drone_actions(target_point, frame, target_sightings):
                 # TTODO: YOU COMPLETE the line of code below:
                 #    switch back to auto mode so that the drone can resume the internal flight plan
                 #    (don't forget to pass the log object).
-                drone.mode = VehicleMode("AUTO")
-                logging.info(f"Switching to AUTO mode...")
+                drone_lib.change_device_mode(drone, "AUTO", log=log)
 
             else:
                 # Here, if the target is spotted the required
@@ -425,7 +423,7 @@ def determine_drone_actions(target_point, frame, target_sightings):
                 if drone.location.global_relative_frame.alt < 11:
                     mov_inc = 0.2  # make smaller adjustments as we get closer to target
 
-                # TODO: YOU COMPLETE the lines of code below:
+                # TTODO: YOU COMPLETE the lines of code below:
                 #    determine y_movement and x_movement
                 #    (also, rate of decent - could be fixed to .5 m/s)
 
@@ -461,7 +459,7 @@ def determine_drone_actions(target_point, frame, target_sightings):
                 cv2.putText(frame, "Targeting...", (10, 400), font, 1, (255, 0, 0), 2, cv2.LINE_AA)
 
                 # Have the drone execute movements.
-                # TODO: YOU COMPLETE the line of code below: move the drone a tiny bit towards the target's
+                # TTODO: YOU COMPLETE the line of code below: move the drone a tiny bit towards the target's
                 #   center point by executing on x_movement and y_movement (don't forget to pass the log object).
                 #   Note that move_local expects velocities, not actual x,y,z positions
                 #   figure out line of code below to get drone to make minor adjustment to current X,Y position
@@ -515,6 +513,7 @@ def determine_drone_actions(target_point, frame, target_sightings):
                     #    switch over to whatever mode you need to
                     #    so as to resume the drone's internal mission
                     #    (don't forget to pass the log object)
+                    drone_lib.change_device_mode(drone, "AUTO", log=log)
 
 
 def search_for_target():
